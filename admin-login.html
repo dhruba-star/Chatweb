@@ -3,7 +3,7 @@
 <head>
   <title>Admin Panel</title>
   <!-- Quill CSS -->
-<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 </head>
 <body>
   <h2>Admin Login</h2>
@@ -14,7 +14,10 @@
   <div id="postArea" style="display:none;">
     <h3>Create Blog Post</h3>
     <input type="text" id="title" placeholder="Title"><br>
-    <textarea id="content" placeholder="Content"></textarea><br>
+
+    <!-- Quill Editor container -->
+    <div id="editor" style="height: 200px; margin-bottom: 10px;"></div>
+
     <button id="submitPost">Post</button>
   </div>
 
@@ -22,6 +25,21 @@
     import { auth, db } from './firebase-config.js';
     import { signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
     import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    // Initialize Quill
+    const quill = new Quill('#editor', {
+      theme: 'snow',
+      placeholder: 'Write your blog content here...',
+      modules: {
+        toolbar: [
+          [{ header: [1, 2, 3, 4, 5, 6, false] }],
+          ['bold', 'italic', 'underline'],
+          ['link', 'image'],
+          [{ list: 'ordered' }, { list: 'bullet' }],
+          ['clean']
+        ]
+      }
+    });
 
     const loginBtn = document.getElementById("loginBtn");
     const postArea = document.getElementById("postArea");
@@ -43,21 +61,24 @@
 
     document.getElementById("submitPost").addEventListener("click", async () => {
       const title = document.getElementById("title").value;
-      const content = document.getElementById("content").value;
+      const content = quill.root.innerHTML; // Get HTML content from Quill
 
-      if (title && content) {
+      if (title && content.trim() !== '<p><br></p>') {
         await addDoc(collection(db, "posts"), {
           title,
           content,
           createdAt: serverTimestamp()
         });
         alert("Post created!");
+        quill.setContents([]); // clear editor
+        document.getElementById("title").value = "";
       } else {
         alert("Please fill in both title and content.");
       }
     });
   </script>
+
   <!-- Quill JS -->
-<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 </body>
 </html>
