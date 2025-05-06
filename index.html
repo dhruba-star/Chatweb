@@ -1,26 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chat Room</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>Blog</title>
 </head>
 <body>
-  <h1>Chat Room</h1>
-  <div>
-    <input type="text" id="roomCode" placeholder="Enter or Create Room Code" />
-    <button id="joinRoom">Join Room</button>
-  </div>
-  <div id="messages"></div>
-  <input type="text" id="messageInput" placeholder="Type a message..." />
-  <button id="sendMessage">Send Message</button>
+  <h2>All Blog Posts</h2>
+  <div id="posts"></div>
 
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+  <script type="module">
+    import { db } from './firebase-config.js';
+    import { collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  <!-- Firebase Configuration & JS -->
-  <script src="app.js"></script>
+    const postsDiv = document.getElementById("posts");
+
+    const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
+    const snapshot = await getDocs(q);
+
+    snapshot.forEach((doc) => {
+      const data = doc.data();
+      const postDiv = document.createElement("div");
+      postDiv.innerHTML = `
+        <h3>${data.title}</h3>
+        <p>${data.content}</p>
+        <hr>`;
+      postsDiv.appendChild(postDiv);
+    });
+  </script>
 </body>
 </html>
