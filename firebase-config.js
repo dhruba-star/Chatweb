@@ -8,7 +8,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyDXzV_Hc6dlDjaOAE0ytnfGaYUTUI5XyTE",
   authDomain: "demoadmin-cdee0.firebaseapp.com",
   projectId: "demoadmin-cdee0",
-  storageBucket: "demoadmin-cdee0.appspot.com",  // fixed here — must be .appspot.com not .storage.app
+  storageBucket: "demoadmin-cdee0.appspot.com", // FIXED HERE
   messagingSenderId: "692280160109",
   appId: "1:692280160109:web:e32123854c8cca270cb464"
 };
@@ -16,6 +16,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-const storage = getStorage(app);  // Add this
+const storage = getStorage(app); // this is needed
 
-export { auth, db, storage }; // Export storage too
+export { auth, db, storage };
