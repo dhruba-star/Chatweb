@@ -12,14 +12,13 @@
   <button id="loginBtn">Login</button>
 
   <div id="postArea" style="display:none;">
-    <h3>Create Blog Post</h3>
-    <input type="text" id="title" placeholder="Title"><br>
-
-    <!-- Quill Editor container -->
-    <div id="editor" style="height: 200px; margin-bottom: 10px;"></div>
-
-    <button id="submitPost">Post</button>
-  </div>
+  <h3>Create Blog Post</h3>
+  <input type="text" id="title" placeholder="Title"><br>
+  <textarea id="summary" placeholder="Short Summary (1-2 lines)"></textarea><br>
+  <input type="file" id="imageUpload"><br>
+  <textarea id="content" placeholder="Content"></textarea><br>
+  <button id="submitPost">Post</button>
+</div>
 
   <script type="module">
     import { auth, db } from './firebase-config.js';
