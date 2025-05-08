@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Full Blog Post</title>
+</head>
+<body>
+  <div id="post"></div>
+
+  <script type="module">
+    import { db } from './firebase-config.js';
+    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get("id");
+    const postDiv = document.getElementById("post");
+
+    if (postId) {
+      const docRef = doc(db, "posts", postId);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        postDiv.innerHTML = `
+          <h2>${data.title}</h2>
+          ${data.imageUrl ? `<img src="${data.imageUrl}" width="300">` : ""}
+          <div>${data.content}</div>
+        `;
+      } else {
+        postDiv.innerHTML = "<p>Post not found.</p>";
+      }
+    } else {
+      postDiv.innerHTML = "<p>Invalid post link.</p>";
+    }
+  </script>
+</body>
+</html>
