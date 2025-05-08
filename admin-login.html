@@ -15,10 +15,11 @@
   <h3>Create Blog Post</h3>
   <input type="text" id="title" placeholder="Title"><br>
   <textarea id="summary" placeholder="Short Summary (1-2 lines)"></textarea><br>
-  <input type="file" id="imageUpload"><br>
-  <textarea id="content" placeholder="Content"></textarea><br>
+  <input type="file" id="imageUpload"><br><br>
+
+  <div id="editor" style="height: 200px;"></div><br>
   <button id="submitPost">Post</button>
-</div>
+  </div>
 
   <script type="module">
     import { auth, db } from './firebase-config.js';
