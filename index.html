@@ -10,32 +10,33 @@
 
   <script type="module">
     import { db } from './firebase-config.js';
-    import { collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { db } from './firebase-config.js';
+import { collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    const postsDiv = document.getElementById("posts");
+const postsDiv = document.getElementById("posts");
 
-    const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
-    const snapshot = await getDocs(q);
+const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
+const snapshot = await getDocs(q);
 
-    if (snapshot.empty) {
-      postsDiv.innerHTML = "<p>No posts found.</p>";
-    } else {
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-        const postId = doc.id;
+if (snapshot.empty) {
+  postsDiv.innerHTML = "<p>No posts found.</p>";
+} else {
+  snapshot.forEach((doc) => {
+    const data = doc.data();
+    const postId = doc.id;
 
-        const postDiv = document.createElement("div");
-        postDiv.innerHTML = `
-          <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
-            <h3>${data.title}</h3>
-            ${data.imageUrl ? `<img src="${data.imageUrl}" width="200" alt="cover image">` : ""}
-            <p>${data.summary || "Click to read more..."}</p>
-            <a href="post.html?id=${postId}">Read Full Post</a>
-          </div>
-        `;
-        postsDiv.appendChild(postDiv);
-      });
-    }
+    const postDiv = document.createElement("div");
+    postDiv.innerHTML = `
+      <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+        <h3>${data.title}</h3>
+        ${data.imageUrl ? `<img src="${data.imageUrl}" width="200" alt="cover image">` : ""}
+        <p>${data.summary || "Click to read more..."}</p>
+        <a href="post.html?id=${postId}">Read Full Post</a>
+      </div>
+    `;
+    postsDiv.appendChild(postDiv);
+  });
+}
   </script>
 </body>
 </html>
